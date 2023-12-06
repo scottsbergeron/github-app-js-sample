@@ -11,7 +11,7 @@ This sample app showcases how webhooks can be used with a GitHub App's installat
 - (For local development) A tunnel to expose your local server to the internet (e.g. [smee](https://smee.io/), [ngrok](https://ngrok.com/) or [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/))
 - Your GitHub App Webhook must be configured to receive events at a URL that is accessible from the internet.
 
-## Setup
+## Setup CHANGE
 
 1. Clone this repository.
 2. Create a `.env` file similar to `.env.example` and set actual values. If you are using GitHub Enterprise Server, also include a `ENTERPRISE_HOSTNAME` variable and set the value to the name of your GitHub Enterprise Server instance.
