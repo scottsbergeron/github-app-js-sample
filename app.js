@@ -47,7 +47,7 @@ async function pullRequestHasRelevantChanges(octokit, repository, pull_request) 
   files.data.forEach(file => console.log(file.filename))
 
   // Check if the pull request contains a relevant file
-  const hasRelevantChanges = files.data.some(file => file.filename.toLowerCase() === 'readme.md')
+  const hasRelevantChanges = files.data.some(file => file.filename.toLowerCase().startsWith('folder1/folder2/'))
   console.log("Contains " + (hasRelevantChanges ? "" : "no ") + "relevant files")
   return hasRelevantChanges
 }
@@ -121,9 +121,11 @@ app.webhooks.on('check_suite.rerequested', async ({ octokit, payload }) => {
 app.webhooks.on('check_run.rerequested', async ({ octokit, payload }) => {
   console.log(`Received a check run rerequested event for #${payload.check_run.id}`)
 
-  payload.check_run.pull_requests.forEach(pull_request => {
-    pullRequestAltered(octokit, payload.repository, pull_request)
-  })
+  if (payload.check_run.name === 'Example Check Suite' && payload.check_run.app.id === 677640) {
+    payload.check_run.pull_requests.forEach(pull_request => {
+      pullRequestAltered(octokit, payload.repository, pull_request)
+    })
+  }
 })
 
 // Subscribe to the "issue_comment.created" webhook event
@@ -141,6 +143,8 @@ app.webhooks.on('issue_comment.created', async ({ octokit, payload }) => {
           repo: payload.repository.name,
           pull_number: payload.issue.number,
         });
+
+        // TODO: Check if the PR contains relevant changes
 
         // Extract the head SHA from the pull request
         const headSha = pullRequest.head.sha;
